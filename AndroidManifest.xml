@@ -54,6 +54,7 @@
     </activity>
     
     <activity android:name=".PreferencesActivity" />
+    <activity android:name="splittr.startup.ui.activity.BillSplitActivity" />
   </application>
   <uses-permission android:name="android.permission.CAMERA"/>
   <uses-permission android:name="android.permission.INTERNET"/>

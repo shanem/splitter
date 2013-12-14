@@ -20,6 +20,8 @@ package edu.sfsu.cs.orange.ocr;
 import java.io.File;
 import java.io.IOException;
 
+import splittr.startup.ui.activity.BillSplitActivity;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -748,39 +750,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     // Display the recognized text
-    TextView sourceLanguageTextView = (TextView) findViewById(R.id.source_language_text_view);
-    sourceLanguageTextView.setText(sourceLanguageReadable);
-    TextView ocrResultTextView = (TextView) findViewById(R.id.ocr_result_text_view);
-    ocrResultTextView.setText(ocrResult.getText());
-    // Crudely scale betweeen 22 and 32 -- bigger font for shorter text
-    int scaledSize = Math.max(22, 32 - ocrResult.getText().length() / 4);
-    ocrResultTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaledSize);
-
-    TextView translationLanguageLabelTextView = (TextView) findViewById(R.id.translation_language_label_text_view);
-    TextView translationLanguageTextView = (TextView) findViewById(R.id.translation_language_text_view);
-    TextView translationTextView = (TextView) findViewById(R.id.translation_text_view);
-    if (isTranslationActive) {
-      // Handle translation text fields
-      translationLanguageLabelTextView.setVisibility(View.VISIBLE);
-      translationLanguageTextView.setText(targetLanguageReadable);
-      translationLanguageTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL), Typeface.NORMAL);
-      translationLanguageTextView.setVisibility(View.VISIBLE);
-
-      // Activate/re-activate the indeterminate progress indicator
-      translationTextView.setVisibility(View.GONE);
-      progressView.setVisibility(View.VISIBLE);
-      setProgressBarVisibility(true);
-      
-      // Get the translation asynchronously
-      new TranslateAsyncTask(this, sourceLanguageCodeTranslation, targetLanguageCodeTranslation, 
-          ocrResult.getText()).execute();
-    } else {
-      translationLanguageLabelTextView.setVisibility(View.GONE);
-      translationLanguageTextView.setVisibility(View.GONE);
-      translationTextView.setVisibility(View.GONE);
-      progressView.setVisibility(View.GONE);
-      setProgressBarVisibility(false);
-    }
+    
+    Intent intent = new Intent(this, BillSplitActivity.class);
+    intent.putExtra(BillSplitActivity.OCR_TEXT, ocrResult.getText());
+    startActivity(intent);
+    finish();
+    
     return true;
   }
   

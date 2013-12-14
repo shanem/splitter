@@ -164,7 +164,9 @@ public final class CameraManager {
    * @param delay Time delay to send with the request
    */
   public synchronized void requestAutoFocus(long delay) {
-  	autoFocusManager.start(delay);
+	  if (autoFocusManager != null) {
+		  autoFocusManager.start(delay);
+	  }
   }
   
   /**
