@@ -1,4 +1,4 @@
-package splittr.startup.ui.model;
+package splittr.startup.model;
 
 public class ReceiptItem {
 	public String label;

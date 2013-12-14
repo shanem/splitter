@@ -1,7 +1,7 @@
 package splittr.startup.ui.adapter;
 
+import splittr.startup.model.ReceiptItem;
 import edu.sfsu.cs.orange.ocr.R;
-import splittr.startup.ui.model.ReceiptItem;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

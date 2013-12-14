@@ -7,10 +7,26 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"/>
 	
+	<ScrollView
+	    android:id="@+id/people_scroll_view"
+	    android:layout_alignParentBottom="true"
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:scrollbars="horizontal"
+		android:background="#495061">
+		<LinearLayout
+		    android:id="@+id/people_view"
+		    android:layout_width="wrap_content"
+			android:layout_height="50dp"
+			android:orientation="horizontal">
+		</LinearLayout>	
+	</ScrollView>
+	
 	<ListView
 	    android:id="@+id/items_list"
 	    android:layout_below="@id/ocr_text_view"
+	    android:layout_above="@id/people_scroll_view"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content" />
-
+	    
 </RelativeLayout>
