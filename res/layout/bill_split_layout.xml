@@ -6,5 +6,11 @@
 	<TextView android:id="@+id/ocr_text_view"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"/>
+	
+	<ListView
+	    android:id="@+id/items_list"
+	    android:layout_below="@id/ocr_text_view"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
 
 </RelativeLayout>
