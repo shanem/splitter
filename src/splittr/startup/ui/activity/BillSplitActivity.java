@@ -47,6 +47,9 @@ public class BillSplitActivity extends Activity {
 	private Person selectedPerson;
 	private List<Person> people = new ArrayList<Person>();
 	private List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+	
+	//Stuff used by the background tasks
+	int tipAmount = 15;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,7 @@ public class BillSplitActivity extends Activity {
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				calculateTipAmount();
 				String[] params = new String[1];
 				params[0] = "790795";
 				SubmitBillTask billTask = new SubmitBillTask();
@@ -111,6 +115,16 @@ public class BillSplitActivity extends Activity {
 		VenmoFriendsTask friendsTask = new VenmoFriendsTask();
 		friendsTask.execute(params);
 		updateView();
+	}
+	
+	private void calculateTipAmount() {
+		String selectedTip = (String) tipOptions.getSelectedItem();
+		if (selectedTip == null) {
+			tipAmount = 15;
+		}
+		else {
+			tipAmount = Integer.parseInt(selectedTip.replace("%", ""));
+		}
 	}
 
 	public void updateResults() {
@@ -204,7 +218,7 @@ public class BillSplitActivity extends Activity {
     	@Override
         protected String doInBackground(String... userId) {
         	try {
-        		Venmo.submitSplitBill(userId[0], receiptItems, 15);
+        		Venmo.submitSplitBill(userId[0], receiptItems, tipAmount);
         	}
         	catch (UnderMinimumAmountException e) {
         		underMinimum = true;
@@ -227,6 +241,7 @@ public class BillSplitActivity extends Activity {
         	else {
         		message = "Billed your friends!";
         	}
+        	message = "Tipping: " + tipAmount;
         	Toast.makeText(BillSplitActivity.this, message, Toast.LENGTH_LONG).show();
         }
     }
