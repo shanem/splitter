@@ -2,53 +2,64 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-	<TextView android:id="@+id/ocr_text_view"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"/>
-	
-	<HorizontalScrollView
-	    android:id="@+id/people_scroll_view"
-	    android:layout_alignParentBottom="true"
-		android:layout_width="match_parent"
-		android:layout_height="100dp"
-		android:background="#495061">
-		<LinearLayout
-		    android:id="@+id/people_view"
-		    android:layout_width="wrap_content"
-			android:layout_height="100dp"
-			android:gravity="center_vertical"
-			android:orientation="horizontal">
-		</LinearLayout>	
-	</HorizontalScrollView>
-	
-	<RelativeLayout
-	    android:id="@+id/tip_and_submit_view"
-	    android:layout_width="match_parent"
-		android:layout_height="50dp"
-		android:layout_above="@id/people_scroll_view">
-		<Spinner
-			android:id="@+id/tip_selector"
-			android:layout_width="120dp" 
-			android:layout_height="wrap_content"
-			android:entries="@array/tip_options"
-			android:layout_alignParentLeft="true"
-			android:layout_centerVertical="true" />
-		<Button
-			android:id="@+id/submit"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:entries="@array/tip_options"
-			android:layout_alignParentRight="true"
-			android:layout_centerVertical="true"
-			android:text="@string/bill_button" />
-	</RelativeLayout>
-	
-	<ListView
-	    android:id="@+id/items_list"
-	    android:layout_below="@id/ocr_text_view"
-	    android:layout_above="@id/tip_and_submit_view"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content" />
-	    
+
+    <ListView
+        android:id="@+id/items_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tip_and_submit_view"
+        android:layout_alignTop="@+id/friends_list"
+        android:layout_toLeftOf="@+id/bill_divider" />
+
+    <ListView
+        android:id="@+id/friends_list"
+        android:layout_width="65dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="#00A3D8"
+        android:divider="@null"
+        android:dividerHeight="4dp"
+        android:paddingTop="4dp" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/ocr_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/friends_list"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/bill_divider"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/friends_list"
+        android:background="#0083A8" />
+
+    <RelativeLayout
+        android:id="@+id/tip_and_submit_view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_toLeftOf="@+id/bill_divider"
+        android:background="#EEEEEE"
+        android:layout_alignParentBottom="true" >
+
+        <Spinner
+            android:id="@+id/tip_selector"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:entries="@array/tip_options" />
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:entries="@array/tip_options"
+            android:text="@string/bill_button" />
+    </RelativeLayout>
+
 </RelativeLayout>

@@ -10,6 +10,7 @@ import java.util.List;
 import splittr.startup.model.Person;
 import splittr.startup.model.ReceiptItem;
 import splittr.startup.ui.PersonView;
+import splittr.startup.ui.adapter.FriendsItemAdapter;
 import splittr.startup.ui.adapter.PersonAdapter;
 import splittr.startup.ui.adapter.ReceiptItemAdapter;
 import splittr.startup.venmo.Venmo;
@@ -23,6 +24,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +32,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,11 +45,12 @@ public class BillSplitActivity extends Activity {
 
 	private TextView ocrTextView;
 	private ListView itemsListView;
-	private ViewGroup peopleView;
 	private Spinner tipOptions;
 	private Button submitButton;
+	private ListView peopleView;
 
 	private ReceiptItemAdapter itemAdapter;
+	private FriendsItemAdapter peopleAdapter;
 
 	private Person selectedPerson;
 	private List<Person> allVenmoFriends = new ArrayList<Person>();
@@ -79,7 +81,7 @@ public class BillSplitActivity extends Activity {
 		ocrTextView = (TextView) findViewById(R.id.ocr_text_view);
 		ocrTextView.setText(getIntent().getExtras().getString(OCR_TEXT));
 
-		peopleView = (ViewGroup) findViewById(R.id.people_view);
+		peopleView = (ListView) findViewById(R.id.friends_list);
 		
 		tipOptions = (Spinner) findViewById(R.id.tip_selector);
 		tipOptions.setSelection(5);
@@ -95,6 +97,9 @@ public class BillSplitActivity extends Activity {
 				billTask.execute(params);
 			}
 		});
+		peopleView = (ListView) findViewById(R.id.friends_list);
+
+		generatePlaceholderData();
 
 		itemAdapter = new ReceiptItemAdapter(this, receiptItems);
 		itemAdapter.notifyDataSetChanged();
@@ -116,12 +121,14 @@ public class BillSplitActivity extends Activity {
 						itemAdapter.notifyDataSetChanged();
 					}
 				});
-		
+
 		String[] params = new String[1];
 		params[0] = "790795";
 		VenmoFriendsTask friendsTask = new VenmoFriendsTask();
 		friendsTask.execute(params);
-		updateView();
+
+		peopleAdapter = new FriendsItemAdapter(getApplicationContext(), selectedVenmoFriends);
+		peopleView.setAdapter(peopleAdapter);
 	}
 	
 	private void calculateTipAmount() {
@@ -149,12 +156,16 @@ public class BillSplitActivity extends Activity {
 
 			displayMessage(contents.toString());
 		} catch (Exception e) {
-			displayMessage("Error: " + e.getMessage());
+			Log.e("BillSplitActivity", "");
+			Log.e("BillSplitActivity", "ERROR: " + e.getMessage());
+			Log.e("BillSplitActivity", "");
+			//displayMessage("Error: " + e.getMessage());
 		}
 	}
 
 	private void displayMessage(String text) {
-		ocrTextView.post(new MessagePoster(text));
+		//TODO: Populate listview with OCR results
+		//ocrTextView.post(new MessagePoster(text));
 	}
 
 	@Override
@@ -179,13 +190,28 @@ public class BillSplitActivity extends Activity {
 
 	protected void generatePlaceholderData() {
 		receiptItems.clear();
-		receiptItems.add(new ReceiptItem("Apple", 100));
-		receiptItems.add(new ReceiptItem("Banana", 50));
-		receiptItems.add(new ReceiptItem("Pear", 80));
+		receiptItems.add(new ReceiptItem("Double Decker Artery Choker", 1000));
+		receiptItems.add(new ReceiptItem("Tomato Artisan Pizza", 1230));
+		receiptItems.add(new ReceiptItem("Whole Foods Banana", 30000));
+		receiptItems.add(new ReceiptItem("Anderson Valley Winter Solstice", 600));
+		receiptItems.add(new ReceiptItem("Mushroom and Spinach Gnocchi", 530));
+		receiptItems.add(new ReceiptItem("Single Espresso", 295));
+		receiptItems.add(new ReceiptItem("Apple Martini", 700));
+		receiptItems.add(new ReceiptItem("Alaskan Sea Bass", 1650));
+		receiptItems.add(new ReceiptItem("Stale Crackers", 20));
+		receiptItems.add(new ReceiptItem("Double Decker Artery Choker", 1000));
+		receiptItems.add(new ReceiptItem("Tomato Artisan Pizza", 1230));
+		receiptItems.add(new ReceiptItem("Whole Foods Banana", 30000));
+		receiptItems.add(new ReceiptItem("Anderson Valley Winter Solstice", 600));
+		receiptItems.add(new ReceiptItem("Mushroom and Spinach Gnocchi", 530));
+		receiptItems.add(new ReceiptItem("Single Espresso", 295));
+		receiptItems.add(new ReceiptItem("Apple Martini", 700));
+		receiptItems.add(new ReceiptItem("Alaskan Sea Bass", 1650));
+		receiptItems.add(new ReceiptItem("Stale Crackers", 20));
 	}
 
 	protected void updateView() {
-		peopleView.removeAllViews();
+		/*peopleView.removeAllViews();
 		int size = 80 * 3;
 		for (final Person person : selectedVenmoFriends) {
 			PersonView personView = new PersonView(this, person,
@@ -208,14 +234,46 @@ public class BillSplitActivity extends Activity {
 			public void onClick(View v) {
 				showPersonSelector();
 			}
-		});
-		peopleView.addView(addUserButton);
+		});*/
+
+		/*selectedVenmoFriends.clear();
+		selectedVenmoFriends.add(new Person("Shane",
+				"http://i.stack.imgur.com/UywPC.jpg?s=64&g=1"));
+		selectedVenmoFriends.add(new Person(
+				"Mark",
+				"https://www.gravatar.com/avatar/bbd257637393bcbc390db713d3ad31bb?s=128&d=identicon&r=PG"));
+		selectedVenmoFriends.add(new Person(
+				"Bob",
+				"https://www.gravatar.com/avatar/2bb8f84e5afc6318fd03de5bf28d1edc?s=128&d=identicon&r=PG"));
+		selectedVenmoFriends.add(new Person("Shane",
+			
+				"http://i.stack.imgur.com/UywPC.jpg?s=64&g=1"));
+		selectedVenmoFriends.add(new Person(
+				"Mark",
+				"https://www.gravatar.com/avatar/bbd257637393bcbc390db713d3ad31bb?s=128&d=identicon&r=PG"));
+		selectedVenmoFriends.add(new Person(
+				"Bob",
+				"https://www.gravatar.com/avatar/2bb8f84e5afc6318fd03de5bf28d1edc?s=128&d=identicon&r=PG"));*/
 	}
 
 	public void setSelectedPerson(Person person) {
 		selectedPerson = person;
 		itemAdapter.setSelectedPerson(person);
-		updateView();
+		peopleAdapter.notifyDataSetChanged();
+	}
+
+	private class VenmoFriendsTask extends
+			AsyncTask<String, Void, List<Person>> {
+		@Override
+		protected List<Person> doInBackground(String... userId) {
+			return Venmo.getFriends(userId[0]);
+		}
+
+		@Override
+		protected void onPostExecute(List<Person> result) {
+			allVenmoFriends = result;
+			peopleAdapter.notifyDataSetChanged();
+		}
 	}
 	
 	protected void showPersonSelector() {
@@ -253,19 +311,6 @@ public class BillSplitActivity extends Activity {
 		
 		dialog.show();
 	}
-	
-    private class VenmoFriendsTask extends AsyncTask<String, Void, List<Person>> {
-        @Override
-        protected List<Person> doInBackground(String... userId) {
-        	return Venmo.getFriends(userId[0]);
-        }
-
-        @Override
-        protected void onPostExecute(List<Person> result) {
-        	allVenmoFriends = result;
-        	updateView();
-        }
-    }
     
     private class SubmitBillTask extends AsyncTask<String, Void, String> {
         boolean underMinimum = false;

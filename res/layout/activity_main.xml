@@ -1,8 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
+    android:layout_height="match_parent" >
+
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
@@ -15,12 +16,12 @@
 
     <Button
         android:id="@+id/fromCameraButton"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider"
         android:layout_centerInParent="true"
         android:layout_marginTop="30dp"
-        android:background="#00AADD"
+        android:background="@drawable/button_red_selector"
         android:onClick="captureImageFromCamera"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
@@ -34,33 +35,68 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/fromCameraButton"
+        android:background="@drawable/button_red_selector"
         android:onClick="captureImageFromSdCard"
         android:text="@string/fromFile"
         android:visibility="gone" />
-    
+
     <Button
-        android:id="@+id/debugButton"
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/fromCameraButton"
         android:layout_alignRight="@+id/fromCameraButton"
         android:layout_below="@+id/fromFileButton"
         android:layout_centerVertical="true"
-        android:layout_marginTop="16dp"
-        android:background="#00AADD"
-        android:onClick="openBillView"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_red_selector"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="Debug"
+        android:text="Venmo"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold" />
-    
+
+    <Button
+        android:id="@+id/debugButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/fromCameraButton"
+        android:layout_alignRight="@+id/fromCameraButton"
+        android:layout_below="@+id/loginButton"
+        android:layout_marginTop="30dp"
+        android:background="@null"
+        android:text="Debug"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_centerVertical="true"
         android:visibility="invisible" />
+    
+    <View android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88000000"
+        android:visibility="gone"/>
+
+    <com.slidinglayer.SlidingLayer
+        xmlns:slidingLayer="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/slidingLayer"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        slidingLayer:closeOnTapEnabled="false"
+        slidingLayer:shadowDrawable="@drawable/sidebar_shadow"
+        slidingLayer:shadowWidth="0dp"
+        slidingLayer:stickTo="left" >
+
+        <include layout="@layout/sliding_layer" />
+    </com.slidinglayer.SlidingLayer>
 
 </RelativeLayout>

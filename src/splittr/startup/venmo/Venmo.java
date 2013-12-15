@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,8 @@ public class Venmo {
 	}
 	
 	public static String formatCents(int cents) {
-		return (cents / 100) + "." + (cents % 100) + (cents % 100 == 0 ? "0" : "");
+		DecimalFormat format = new DecimalFormat("0.00");
+		return format.format((cents / 100.00));
 	}
 
 	protected static String sendGetApiRequest(URL apiCall) {

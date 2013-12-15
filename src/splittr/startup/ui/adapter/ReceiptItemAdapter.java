@@ -1,5 +1,6 @@
 package splittr.startup.ui.adapter;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import splittr.startup.model.Person;
@@ -15,43 +16,41 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 public class ReceiptItemAdapter extends ArrayAdapter<ReceiptItem> {
-	Context context;
-	Person selectedPerson;
-	
-	public ReceiptItemAdapter(Context context, List<ReceiptItem> items) {
-		super(context, R.layout.receipt_item, items);
-		this.context = context;
+
+	private Context context;
+	private Person selectedPerson;
+
+	public ReceiptItemAdapter(Context context, List<ReceiptItem> objects) {
+		super(context, R.layout.bill_row, objects);
 	}
-	
-	public void setSelectedPerson(Person selectedPerson) {
-		this.selectedPerson = selectedPerson;
-	}
-	
-	public Person getSelectedPerson() {
-		return selectedPerson;
-	}
-	
+
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent){
+	public View getView(int position, View convertView, ViewGroup parent) {
 		final ReceiptItem item = getItem(position);
-		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.receipt_item, null);
-		}
-		((TextView) convertView.findViewById(R.id.item_label)).setText(item.label);
-		((TextView) convertView.findViewById(R.id.item_price)).setText(formatPrice(item.priceInCents));
+		LayoutInflater inflater = (LayoutInflater) getContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		convertView = inflater.inflate(R.layout.bill_row, null);
+		((TextView) convertView.findViewById(R.id.bill_row_price))
+				.setText(Venmo.formatCents(item.priceInCents));
+		((TextView) convertView.findViewById(R.id.bill_row_name))
+				.setText(item.label);
 		
-		ViewGroup peopleLayout = (ViewGroup) convertView.findViewById(R.id.people_layout);
+		/*ViewGroup peopleLayout = (ViewGroup) convertView.findViewById(R.id.people_layout);
 		peopleLayout.removeAllViews();
 		for (final Person person : item.people) {
 			PersonView personView = new PersonView(context, person, false, 42 * 3);
 			peopleLayout.addView(personView);
-		}
-		
+		}*/
+
 		return convertView;
 	}
-	
-	private String formatPrice(int priceInCents) {
-		return "$" + Venmo.formatCents(priceInCents);
+
+	public void setSelectedPerson(Person selectedPerson) {
+		this.selectedPerson = selectedPerson;
 	}
+
+	public Person getSelectedPerson() {
+		return selectedPerson;
+	}
+	
 }
