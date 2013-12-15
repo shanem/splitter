@@ -9,7 +9,7 @@ import java.util.List;
 
 import splittr.startup.model.Person;
 import splittr.startup.model.ReceiptItem;
-import splittr.startup.ui.PersonView;
+import splittr.startup.ui.CircularImageView;
 import splittr.startup.ui.adapter.FriendsItemAdapter;
 import splittr.startup.ui.adapter.PersonAdapter;
 import splittr.startup.ui.adapter.ReceiptItemAdapter;
@@ -21,18 +21,20 @@ import abbyy.ocrsdk.android.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,8 +58,8 @@ public class BillSplitActivity extends Activity {
 	private List<Person> allVenmoFriends = new ArrayList<Person>();
 	private List<Person> selectedVenmoFriends = new ArrayList<Person>();
 	private List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
-	
-	//Stuff used by the background tasks
+
+	// Stuff used by the background tasks
 	int tipAmount = 15;
 
 	@Override
@@ -66,7 +68,7 @@ public class BillSplitActivity extends Activity {
 
 		setContentView(R.layout.bill_split_layout);
 		generatePlaceholderData();
-		
+
 		String imageUrl = "unknown";
 
 		Bundle extras = getIntent().getExtras();
@@ -82,10 +84,10 @@ public class BillSplitActivity extends Activity {
 		ocrTextView.setText(getIntent().getExtras().getString(OCR_TEXT));
 
 		peopleView = (ListView) findViewById(R.id.friends_list);
-		
+
 		tipOptions = (Spinner) findViewById(R.id.tip_selector);
-		tipOptions.setSelection(5);
-		
+		tipOptions.setSelection(0);
+
 		submitButton = (Button) findViewById(R.id.submit);
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -127,16 +129,30 @@ public class BillSplitActivity extends Activity {
 		VenmoFriendsTask friendsTask = new VenmoFriendsTask();
 		friendsTask.execute(params);
 
-		peopleAdapter = new FriendsItemAdapter(getApplicationContext(), selectedVenmoFriends);
+		peopleAdapter = new FriendsItemAdapter(getApplicationContext(),
+				selectedVenmoFriends);
 		peopleView.setAdapter(peopleAdapter);
+
+		View addUserButton = ((LayoutInflater) getApplicationContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
+				R.layout.add_person, null);
+		addUserButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showPersonSelector();
+			}
+		});
+		CircularImageView icon = (CircularImageView) addUserButton
+				.findViewById(R.id.add_icon);
+		icon.setBorderColor(Color.TRANSPARENT);
+		peopleView.addFooterView(addUserButton);
 	}
-	
+
 	private void calculateTipAmount() {
 		String selectedTip = (String) tipOptions.getSelectedItem();
 		if (selectedTip == null) {
 			tipAmount = 15;
-		}
-		else {
+		} else {
 			tipAmount = Integer.parseInt(selectedTip.replace("%", ""));
 		}
 	}
@@ -159,13 +175,13 @@ public class BillSplitActivity extends Activity {
 			Log.e("BillSplitActivity", "");
 			Log.e("BillSplitActivity", "ERROR: " + e.getMessage());
 			Log.e("BillSplitActivity", "");
-			//displayMessage("Error: " + e.getMessage());
+			// displayMessage("Error: " + e.getMessage());
 		}
 	}
 
 	private void displayMessage(String text) {
-		//TODO: Populate listview with OCR results
-		//ocrTextView.post(new MessagePoster(text));
+		// TODO: Populate listview with OCR results
+		// ocrTextView.post(new MessagePoster(text));
 	}
 
 	@Override
@@ -193,7 +209,8 @@ public class BillSplitActivity extends Activity {
 		receiptItems.add(new ReceiptItem("Double Decker Artery Choker", 1000));
 		receiptItems.add(new ReceiptItem("Tomato Artisan Pizza", 1230));
 		receiptItems.add(new ReceiptItem("Whole Foods Banana", 30000));
-		receiptItems.add(new ReceiptItem("Anderson Valley Winter Solstice", 600));
+		receiptItems
+				.add(new ReceiptItem("Anderson Valley Winter Solstice", 600));
 		receiptItems.add(new ReceiptItem("Mushroom and Spinach Gnocchi", 530));
 		receiptItems.add(new ReceiptItem("Single Espresso", 295));
 		receiptItems.add(new ReceiptItem("Apple Martini", 700));
@@ -202,58 +219,13 @@ public class BillSplitActivity extends Activity {
 		receiptItems.add(new ReceiptItem("Double Decker Artery Choker", 1000));
 		receiptItems.add(new ReceiptItem("Tomato Artisan Pizza", 1230));
 		receiptItems.add(new ReceiptItem("Whole Foods Banana", 30000));
-		receiptItems.add(new ReceiptItem("Anderson Valley Winter Solstice", 600));
+		receiptItems
+				.add(new ReceiptItem("Anderson Valley Winter Solstice", 600));
 		receiptItems.add(new ReceiptItem("Mushroom and Spinach Gnocchi", 530));
 		receiptItems.add(new ReceiptItem("Single Espresso", 295));
 		receiptItems.add(new ReceiptItem("Apple Martini", 700));
 		receiptItems.add(new ReceiptItem("Alaskan Sea Bass", 1650));
 		receiptItems.add(new ReceiptItem("Stale Crackers", 20));
-	}
-
-	protected void updateView() {
-		/*peopleView.removeAllViews();
-		int size = 80 * 3;
-		for (final Person person : selectedVenmoFriends) {
-			PersonView personView = new PersonView(this, person,
-					person == selectedPerson, size);
-			personView.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					setSelectedPerson(person);
-				}
-			});
-			peopleView.addView(personView);
-		}
-		ImageView addUserButton = new ImageView(this);
-		addUserButton.setImageDrawable(getResources().getDrawable(android.R.drawable.btn_plus));
-		addUserButton.setPadding(20,  20,  20,  20);
-		addUserButton.setLayoutParams(new LayoutParams(80 * 4, 80 * 4));
-		
-		addUserButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showPersonSelector();
-			}
-		});*/
-
-		/*selectedVenmoFriends.clear();
-		selectedVenmoFriends.add(new Person("Shane",
-				"http://i.stack.imgur.com/UywPC.jpg?s=64&g=1"));
-		selectedVenmoFriends.add(new Person(
-				"Mark",
-				"https://www.gravatar.com/avatar/bbd257637393bcbc390db713d3ad31bb?s=128&d=identicon&r=PG"));
-		selectedVenmoFriends.add(new Person(
-				"Bob",
-				"https://www.gravatar.com/avatar/2bb8f84e5afc6318fd03de5bf28d1edc?s=128&d=identicon&r=PG"));
-		selectedVenmoFriends.add(new Person("Shane",
-			
-				"http://i.stack.imgur.com/UywPC.jpg?s=64&g=1"));
-		selectedVenmoFriends.add(new Person(
-				"Mark",
-				"https://www.gravatar.com/avatar/bbd257637393bcbc390db713d3ad31bb?s=128&d=identicon&r=PG"));
-		selectedVenmoFriends.add(new Person(
-				"Bob",
-				"https://www.gravatar.com/avatar/2bb8f84e5afc6318fd03de5bf28d1edc?s=128&d=identicon&r=PG"));*/
 	}
 
 	public void setSelectedPerson(Person person) {
@@ -276,27 +248,36 @@ public class BillSplitActivity extends Activity {
 			peopleAdapter.notifyDataSetChanged();
 		}
 	}
-	
+
 	protected void showPersonSelector() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Who are you with?");
+		
+		final ViewGroup personDialogView = (ViewGroup) ((LayoutInflater) getApplicationContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
+				R.layout.friends_dialog, null);
 
-		final ListView personList = new ListView(this);
+		final ListView personList = (ListView) personDialogView
+				.findViewById(R.id.friends_dialog_listview);
 		personList.setFocusable(false);
 		final PersonAdapter adapter = new PersonAdapter(this, allVenmoFriends);
 		personList.setAdapter(adapter);
-
-		personList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		    @Override
-		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		    	Person person = (Person) adapter.getItem(position);
-		    	person.selected = !person.selected;
-		    	adapter.notifyDataSetChanged();
-		    }
+		final Button addFriends = (Button) personDialogView
+				.findViewById(R.id.add_friends_button);
+		addFriends.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				selectedVenmoFriends.clear();
+				for (Person person : allVenmoFriends) {
+					if (person.selected) {
+						selectedVenmoFriends.add(person);
+					}
+				}
+				peopleAdapter.notifyDataSetChanged();
+			}
 		});
-
-		builder.setView(personList);
-		final Dialog dialog = builder.create();
+		builder.setView(personDialogView);
+		Dialog dialog = builder.create();
 		dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
@@ -306,45 +287,42 @@ public class BillSplitActivity extends Activity {
 						selectedVenmoFriends.add(person);
 					}
 				}
-				updateView();
+				peopleAdapter.notifyDataSetChanged();
 			}
 		});
-		
+
 		dialog.show();
 	}
-    
-    private class SubmitBillTask extends AsyncTask<String, Void, String> {
-        boolean underMinimum = false;
-        boolean error = false;
-    	
-    	@Override
-        protected String doInBackground(String... userId) {
-        	try {
-        		Venmo.submitSplitBill(userId[0], receiptItems, tipAmount);
-        	}
-        	catch (UnderMinimumAmountException e) {
-        		underMinimum = true;
-        	}
-        	catch (VenmoException e) {
-        		error = true;
-        	}
-        	return null;
-        }
 
-        @Override
-        protected void onPostExecute(String result) {
-        	String message;
-        	if (underMinimum) {
-        		message = "Sorry, someone is under the minimum transaction amount of $1.00";
-        	}
-        	else if (error) {
-        		message = "Sorry, there was an error submitting your request.";
-        	}
-        	else {
-        		message = "Billed your friends!";
-        	}
-        	message = "Tipping: " + tipAmount;
-        	Toast.makeText(BillSplitActivity.this, message, Toast.LENGTH_LONG).show();
-        }
-    }
+	private class SubmitBillTask extends AsyncTask<String, Void, String> {
+		boolean underMinimum = false;
+		boolean error = false;
+
+		@Override
+		protected String doInBackground(String... userId) {
+			try {
+				Venmo.submitSplitBill(userId[0], receiptItems, tipAmount);
+			} catch (UnderMinimumAmountException e) {
+				underMinimum = true;
+			} catch (VenmoException e) {
+				error = true;
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			String message;
+			if (underMinimum) {
+				message = "Sorry, someone is under the minimum transaction amount of $1.00";
+			} else if (error) {
+				message = "Sorry, there was an error submitting your request.";
+			} else {
+				message = "Billed your friends!";
+			}
+			message = "Tipping: " + tipAmount;
+			Toast.makeText(BillSplitActivity.this, message, Toast.LENGTH_LONG)
+					.show();
+		}
+	}
 }
