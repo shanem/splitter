@@ -92,7 +92,7 @@ public class BillSplitActivity extends Activity {
 			public void onClick(View v) {
 				calculateTipAmount();
 				String[] params = new String[1];
-				params[0] = "790795";
+				params[0] = null;
 				SubmitBillTask billTask = new SubmitBillTask();
 				billTask.execute(params);
 			}
@@ -123,7 +123,7 @@ public class BillSplitActivity extends Activity {
 				});
 
 		String[] params = new String[1];
-		params[0] = "790795";
+		params[0] = null;
 		VenmoFriendsTask friendsTask = new VenmoFriendsTask();
 		friendsTask.execute(params);
 
@@ -266,7 +266,8 @@ public class BillSplitActivity extends Activity {
 			AsyncTask<String, Void, List<Person>> {
 		@Override
 		protected List<Person> doInBackground(String... userId) {
-			return Venmo.getFriends(userId[0]);
+			String myId = Venmo.getMyId();
+			return Venmo.getFriends(myId);
 		}
 
 		@Override

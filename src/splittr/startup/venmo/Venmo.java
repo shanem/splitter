@@ -23,16 +23,29 @@ import splittr.startup.venmo.exceptions.UnderMinimumAmountException;
 import splittr.startup.venmo.exceptions.VenmoException;
 
 public class Venmo {
+	
+	public static final String CLIENT_ID = "1518";
+	public static final String CLIENT_SECRET = "B2HDFZaCxNCgstPRpUxbZdfRj6wVBC7D";
+	
+	private static String accessToken;
+	
+	public static String getAccessToken() {
+		return accessToken;
+	}
+	
+	public static void setAccessToken(String token) {
+		accessToken = token;
+	}
 
 	public static String requestPayment(String userId, int amountInCents, String note, String email) {
 		String apiFormParams = "";
 		String amountString = formatCents(amountInCents);
 
 		if (userId != null) { //if the user is in venmo then
-			apiFormParams = "access_token=KgTEGQvNuFsgwpMXZPkDKCBgq2nmu2DS&user_id="
+			apiFormParams = "access_token=" + accessToken + "&user_id="
 					+ userId + "&amount=-" + amountString + "&note=" + URLEncoder.encode(note);
 		} else if (email != null) { //if the user is not in venmo then
-			apiFormParams = "access_token=KgTEGQvNuFsgwpMXZPkDKCBgq2nmu2DS&email="
+			apiFormParams = "access_token=" + accessToken + "&email="
 					+ email + "&amount=-" + amountString + "&note=" + URLEncoder.encode(note);
 		} else { // error: missing req params
 			return null;
@@ -141,12 +154,38 @@ public class Venmo {
 		}
 	}
 
+	public static String getMyId() {
+		String apiResponse;
+		String myId = null;
+		try {
+			URL url = new URL("https://api.venmo.com/me?access_token=" + accessToken);
+			apiResponse = sendGetApiRequest(url);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		JSONParser parser = new JSONParser();
+		try {
+			Object obj = parser.parse(apiResponse);
+			JSONObject jsonObject = (JSONObject) obj;
+			JSONObject data = (JSONObject) jsonObject.get("data");
+
+			myId = "" + (Long) data.get("id");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return myId;
+	}
+	
+	
 	public static List<Person> getFriends(String userId) {
 		String apiResponse;
 		try {
-			URL url = new URL("https://sandbox-api.venmo.com/users/" + userId
+			URL url = new URL("https://api.venmo.com/users/" + userId
 					+ "/friends?"
-					+ "access_token=dXtNPewHpADdjvBCGQbhFtkjXrnBsFZ3");
+					+ "access_token=" + accessToken);
 
 			apiResponse = sendGetApiRequest(url);
 

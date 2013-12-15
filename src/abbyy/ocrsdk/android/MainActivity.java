@@ -2,7 +2,9 @@ package abbyy.ocrsdk.android;
 
 import java.io.File;
 
+import splittr.startup.oauth.OAuthHelper;
 import splittr.startup.ui.activity.BillSplitActivity;
+import splittr.startup.venmo.Venmo;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -33,7 +36,9 @@ public class MainActivity extends Activity {
 	private SlidingLayer slidingLayer;
 	private Button debugButton;
 	private Button loginButton;
-
+	private Button venmoLoginButton;
+	private OAuthHelper oAuth;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,10 +48,11 @@ public class MainActivity extends Activity {
 		slidingLayer = (SlidingLayer) findViewById(R.id.slidingLayer);
 		debugButton = (Button) findViewById(R.id.debugButton);
 		loginButton = (Button) findViewById(R.id.loginButton);
+		venmoLoginButton = (Button) findViewById(R.id.slidingLoginButton);
 		overlay = (View) findViewById(R.id.overlay);
 
 		slidingLayer.setVisibility(View.VISIBLE);
-
+		
 		loginButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -62,6 +68,7 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
+		
 
 		debugButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -70,6 +77,17 @@ public class MainActivity extends Activity {
 						BillSplitActivity.class);
 				intent.putExtra(BillSplitActivity.OCR_TEXT, "");
 				startActivity(intent);
+			}
+		});
+		
+		venmoLoginButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Uri oAuthUri = Uri.parse("https://api.venmo.com/oauth/authorize?client_id=" + Venmo.CLIENT_ID
+						+ "&scope=make_payments,access_friends,access_profile&response_type=token&"
+						+ "redirect_uri=http%3A%2F%2Fec2-50-16-145-146.compute-1.amazonaws.com%2Ftesterex.php");
+				Intent browserIntent = new Intent("android.intent.action.VIEW", oAuthUri);
+				startActivity(browserIntent);
 			}
 		});
 	}
@@ -133,6 +151,18 @@ public class MainActivity extends Activity {
 
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		Intent intent = getIntent();
+		if (intent.getData() != null && intent.getData().getQuery() != null) {
+			String query = intent.getData().getQuery();
+			if (query.contains("access_token=")) {
+				Venmo.setAccessToken(query.replace("access_token=", ""));
+			}
+		}
+	}
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
