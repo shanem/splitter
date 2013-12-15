@@ -67,7 +67,6 @@ public class BillSplitActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.bill_split_layout);
-		generatePlaceholderData();
 
 		String imageUrl = "unknown";
 
@@ -100,8 +99,6 @@ public class BillSplitActivity extends Activity {
 			}
 		});
 		peopleView = (ListView) findViewById(R.id.friends_list);
-
-		generatePlaceholderData();
 
 		itemAdapter = new ReceiptItemAdapter(this, receiptItems);
 		itemAdapter.notifyDataSetChanged();
@@ -182,6 +179,8 @@ public class BillSplitActivity extends Activity {
 	private void displayMessage(String text) {
 		// TODO: Populate listview with OCR results
 		// ocrTextView.post(new MessagePoster(text));
+		generatePlaceholderData();
+		itemAdapter.notifyDataSetChanged();
 	}
 
 	@Override
