@@ -3,12 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#EE5D48"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="The Little Chihuahua"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/title_divider"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@+id/title"
+        android:background="#DD4D38" />
+
     <ListView
         android:id="@+id/items_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tip_and_submit_view"
         android:layout_alignTop="@+id/friends_list"
+        android:layout_below="@+id/title_divider"
         android:layout_toLeftOf="@+id/bill_divider" />
 
     <ListView
@@ -16,7 +37,8 @@
         android:layout_width="65dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="#00A3D8"
+        android:layout_below="@+id/title_divider"
+        android:background="#0083C8"
         android:divider="@null"
         android:dividerHeight="4dp"
         android:paddingTop="4dp" >
@@ -33,33 +55,46 @@
         android:id="@+id/bill_divider"
         android:layout_width="4dp"
         android:layout_height="match_parent"
+        android:layout_below="@+id/title_divider"
         android:layout_toLeftOf="@+id/friends_list"
-        android:background="#0083A8" />
+        android:background="#006398" />
 
     <RelativeLayout
         android:id="@+id/tip_and_submit_view"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="58dp"
+        android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/bill_divider"
-        android:background="#EEEEEE"
-        android:layout_alignParentBottom="true" >
+        android:background="#EEEEEE" >
+
+        <View
+            android:id="@+id/tip_divider"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_alignParentTop="true"
+            android:background="#DDDDDD" />
 
         <Spinner
             android:id="@+id/tip_selector"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
             android:entries="@array/tip_options" />
 
         <Button
             android:id="@+id/submit"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="4dp"
+            android:background="@drawable/button_red_selector"
             android:entries="@array/tip_options"
-            android:text="@string/bill_button" />
+            android:text="@string/bill_button"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -9,6 +9,7 @@ import abbyy.ocrsdk.android.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
@@ -32,16 +33,18 @@ public class FriendsItemAdapter extends ArrayAdapter<Person> {
 		LayoutInflater inflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		convertView = inflater.inflate(R.layout.friend_row, null);
-		/*
-		 * PersonView personView = new PersonView(context, person, false, 80 *
-		 * 3); personView.setOnClickListener(new View.OnClickListener() {
-		 * 
-		 * @Override public void onClick(View v) { //setSelectedPerson(person);
-		 * } });
-		 */
+
 		CircularImageView thumbnail = (CircularImageView) convertView
 				.findViewById(R.id.friend_thumb);
 		thumbnail.setBorderWidth(0);
+		thumbnail.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// set selected
+
+			}
+		});
 
 		ImageLoader imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));

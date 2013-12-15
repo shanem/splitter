@@ -12,21 +12,21 @@
 
         <TextView
             android:id="@+id/bill_row_price"
-            android:layout_width="120dp"
+            android:layout_width="80dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             android:layout_height="match_parent"
             android:gravity="left|center_vertical"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp"
             android:text="100.25"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#999999"
-            android:textSize="28sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/bill_row_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="14dp"
             android:gravity="center_vertical"
             android:text="Triple Bacon Artery Clogger"
             android:textAppearance="?android:attr/textAppearanceMedium"
