@@ -44,7 +44,7 @@ public class ReceiptItemAdapter extends ArrayAdapter<ReceiptItem> {
 		ViewGroup peopleLayout = (ViewGroup) convertView.findViewById(R.id.people_layout);
 		peopleLayout.removeAllViews();
 		for (final Person person : item.people) {
-			PersonView personView = new PersonView(context, person, false);
+			PersonView personView = new PersonView(context, person, false, 42 * 3);
 			peopleLayout.addView(personView);
 		}
 		

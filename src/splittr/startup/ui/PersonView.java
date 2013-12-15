@@ -18,11 +18,12 @@ public class PersonView extends RelativeLayout {
 	private final Person person;
 	private final Context context;
 	
-	public PersonView(final Context context, final Person person, boolean selected) {
+	public PersonView(final Context context, final Person person, boolean selected, int size) {
         super(context);
         this.context = context;
         this.person = person;
     	setSelected(selected);
+    	setLayoutParams(new LayoutParams(size, size));
         
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.person, this, true);

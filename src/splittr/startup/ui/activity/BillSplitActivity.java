@@ -79,7 +79,7 @@ public class BillSplitActivity extends Activity {
 	protected void updateView() {
 		peopleView.removeAllViews();
 		for (final Person person : people) {
-			PersonView personView = new PersonView(this, person, person == selectedPerson);
+			PersonView personView = new PersonView(this, person, person == selectedPerson, 80 * 3);
 			personView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
