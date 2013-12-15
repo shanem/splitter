@@ -7,12 +7,11 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"/>
 	
-	<ScrollView
+	<HorizontalScrollView
 	    android:id="@+id/people_scroll_view"
 	    android:layout_alignParentBottom="true"
 		android:layout_width="match_parent"
 		android:layout_height="100dp"
-		android:scrollbars="horizontal"
 		android:background="#495061">
 		<LinearLayout
 		    android:id="@+id/people_view"
@@ -21,7 +20,7 @@
 			android:gravity="center_vertical"
 			android:orientation="horizontal">
 		</LinearLayout>	
-	</ScrollView>
+	</HorizontalScrollView>
 	
 	<RelativeLayout
 	    android:id="@+id/tip_and_submit_view"
