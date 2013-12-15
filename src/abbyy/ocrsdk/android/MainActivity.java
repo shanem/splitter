@@ -2,7 +2,6 @@ package abbyy.ocrsdk.android;
 
 import java.io.File;
 
-import splittr.startup.oauth.OAuthHelper;
 import splittr.startup.ui.activity.BillSplitActivity;
 import splittr.startup.venmo.Venmo;
 import android.app.Activity;
@@ -37,7 +36,6 @@ public class MainActivity extends Activity {
 	private Button debugButton;
 	private Button loginButton;
 	private Button venmoLoginButton;
-	private OAuthHelper oAuth;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
