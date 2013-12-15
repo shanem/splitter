@@ -5,6 +5,7 @@ import java.util.List;
 import splittr.startup.model.Person;
 import splittr.startup.model.ReceiptItem;
 import splittr.startup.ui.PersonView;
+import splittr.startup.ui.activity.BillSplitActivity;
 import edu.sfsu.cs.orange.ocr.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ public class ReceiptItemAdapter extends ArrayAdapter<ReceiptItem> {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent){
-		ReceiptItem item = getItem(position);
+		final ReceiptItem item = getItem(position);
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.receipt_item, null);
@@ -42,7 +43,7 @@ public class ReceiptItemAdapter extends ArrayAdapter<ReceiptItem> {
 		
 		ViewGroup peopleLayout = (ViewGroup) convertView.findViewById(R.id.people_layout);
 		peopleLayout.removeAllViews();
-		for (Person person : item.people) {
+		for (final Person person : item.people) {
 			PersonView personView = new PersonView(context, person, false);
 			peopleLayout.addView(personView);
 		}

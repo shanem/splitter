@@ -31,12 +31,6 @@ public class PersonView extends RelativeLayout {
 		ImageLoader.getInstance().displayImage(person.imageUrl, avatar);
 		selectionView = findViewById(R.id.selection);
 		
-		setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				((BillSplitActivity) context).setSelectedPerson(person);
-			}
-		});
 		selectionView.setVisibility(isSelected() ? View.VISIBLE : View.GONE);
     }
 }

@@ -49,8 +49,13 @@ public class BillSplitActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View item, int position, long id) {
 				ReceiptItem receiptItem = itemAdapter.getItem(position);
-				if (selectedPerson != null && !receiptItem.people.contains(selectedPerson)) {
-					receiptItem.people.add(selectedPerson);
+				if (selectedPerson != null) {
+					if (receiptItem.people.contains(selectedPerson)) {
+						receiptItem.people.remove(selectedPerson);
+					}
+					else {
+						receiptItem.people.add(selectedPerson);
+					}
 				}
 				itemAdapter.notifyDataSetChanged();
 			}
@@ -73,8 +78,14 @@ public class BillSplitActivity extends Activity {
 	
 	protected void updateView() {
 		peopleView.removeAllViews();
-		for (Person person : people) {
+		for (final Person person : people) {
 			PersonView personView = new PersonView(this, person, person == selectedPerson);
+			personView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					setSelectedPerson(person);
+				}
+			});
 			peopleView.addView(personView);
 		}
 	}
