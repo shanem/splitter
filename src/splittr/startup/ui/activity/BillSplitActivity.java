@@ -206,26 +206,8 @@ public class BillSplitActivity extends Activity {
 
 	protected void generatePlaceholderData() {
 		receiptItems.clear();
-		receiptItems.add(new ReceiptItem("Double Decker Artery Choker", 1000));
-		receiptItems.add(new ReceiptItem("Tomato Artisan Pizza", 1230));
-		receiptItems.add(new ReceiptItem("Whole Foods Banana", 30000));
-		receiptItems
-				.add(new ReceiptItem("Anderson Valley Winter Solstice", 600));
-		receiptItems.add(new ReceiptItem("Mushroom and Spinach Gnocchi", 530));
-		receiptItems.add(new ReceiptItem("Single Espresso", 295));
-		receiptItems.add(new ReceiptItem("Apple Martini", 700));
-		receiptItems.add(new ReceiptItem("Alaskan Sea Bass", 1650));
-		receiptItems.add(new ReceiptItem("Stale Crackers", 20));
-		receiptItems.add(new ReceiptItem("Double Decker Artery Choker", 1000));
-		receiptItems.add(new ReceiptItem("Tomato Artisan Pizza", 1230));
-		receiptItems.add(new ReceiptItem("Whole Foods Banana", 30000));
-		receiptItems
-				.add(new ReceiptItem("Anderson Valley Winter Solstice", 600));
-		receiptItems.add(new ReceiptItem("Mushroom and Spinach Gnocchi", 530));
-		receiptItems.add(new ReceiptItem("Single Espresso", 295));
-		receiptItems.add(new ReceiptItem("Apple Martini", 700));
-		receiptItems.add(new ReceiptItem("Alaskan Sea Bass", 1650));
-		receiptItems.add(new ReceiptItem("Stale Crackers", 20));
+		receiptItems.add(new ReceiptItem("BB Crab&Shrimp", 745));
+		receiptItems.add(new ReceiptItem("Soda", 231));
 	}
 
 	public void setSelectedPerson(Person person) {
