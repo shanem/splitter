@@ -29,7 +29,7 @@
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
-            android:name="abbyy.ocrsdk.android.ResultsActivity"
+            android:name="splittr.startup.ui.activity.BillSplitActivity"
             android:label="@string/title_activity_results" >
         </activity>
     </application>

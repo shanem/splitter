@@ -33,9 +33,28 @@
         android:id="@+id/fromFileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/fromCameraButton"
         android:onClick="captureImageFromSdCard"
         android:text="@string/fromFile"
         android:visibility="gone" />
+    
+    <Button
+        android:id="@+id/debugButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/fromCameraButton"
+        android:layout_alignRight="@+id/fromCameraButton"
+        android:layout_below="@+id/fromFileButton"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="16dp"
+        android:background="#00AADD"
+        android:onClick="openBillView"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Debug"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
     
     <View
         android:id="@+id/divider"

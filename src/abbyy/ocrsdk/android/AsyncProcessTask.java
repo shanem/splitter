@@ -2,6 +2,8 @@ package abbyy.ocrsdk.android;
 
 import java.io.FileOutputStream;
 
+import splittr.startup.ui.activity.BillSplitActivity;
+
 import com.abbyy.ocrsdk.*;
 
 import android.app.*;
@@ -11,14 +13,14 @@ import android.os.AsyncTask;
 
 public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 
-	public AsyncProcessTask(ResultsActivity activity) {
+	public AsyncProcessTask(BillSplitActivity activity) {
 		this.activity = activity;
 		dialog = new ProgressDialog(activity);
 	}
 
 	private ProgressDialog dialog;
 	/** application context. */
-	private final ResultsActivity activity;
+	private final BillSplitActivity activity;
 
 	protected void onPreExecute() {
 		dialog.setMessage("Processing");

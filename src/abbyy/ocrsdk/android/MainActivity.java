@@ -9,6 +9,8 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import splittr.startup.ui.activity.BillSplitActivity;
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -82,6 +84,12 @@ public class MainActivity extends Activity {
         startActivityForResult(intent, TAKE_PICTURE);
     } 
     
+    public void openBillView(View view) {
+    	Intent intent = new Intent(this, BillSplitActivity.class);
+    	intent.putExtra(BillSplitActivity.OCR_TEXT, "");
+    	startActivity(intent);
+    }
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -108,7 +116,7 @@ public class MainActivity extends Activity {
 		//Remove output file
 		deleteFile(resultUrl);
 		
-        Intent results = new Intent( this, ResultsActivity.class);
+        Intent results = new Intent( this, BillSplitActivity.class);
     	results.putExtra("IMAGE_PATH", imageFilePath);
     	results.putExtra("RESULT_PATH", resultUrl);
     	startActivity(results);
