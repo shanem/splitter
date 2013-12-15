@@ -18,18 +18,21 @@ import org.json.simple.parser.ParseException;
 
 import splittr.startup.model.Person;
 import splittr.startup.model.ReceiptItem;
+import splittr.startup.venmo.exceptions.UnderMinimumAmountException;
+import splittr.startup.venmo.exceptions.VenmoException;
 
 public class Venmo {
 
-	public static String requestPayment(String userId, String amount, String note, String email) {
+	public static String requestPayment(String userId, int amountInCents, String note, String email) {
 		String apiFormParams = "";
+		String amountString = formatCents(amountInCents);
 
 		if (userId != null) { //if the user is in venmo then
 			apiFormParams = "access_token=KgTEGQvNuFsgwpMXZPkDKCBgq2nmu2DS&user_id="
-					+ userId + "&amount=-" + amount + "&note=" + URLEncoder.encode(note);
+					+ userId + "&amount=-" + amountString + "&note=" + URLEncoder.encode(note);
 		} else if (email != null) { //if the user is not in venmo then
 			apiFormParams = "access_token=KgTEGQvNuFsgwpMXZPkDKCBgq2nmu2DS&email="
-					+ email + "&amount=-" + amount + "&note=" + URLEncoder.encode(note);
+					+ email + "&amount=-" + amountString + "&note=" + URLEncoder.encode(note);
 		} else { // error: missing req params
 			return null;
 		}
@@ -38,6 +41,10 @@ public class Venmo {
 
 		return apiResponse;
 
+	}
+	
+	public static String formatCents(int cents) {
+		return (cents / 100) + "." + (cents % 100) + (cents % 10 == 0 ? "0" : "");
 	}
 
 	protected static String sendGetApiRequest(URL apiCall) {
@@ -179,7 +186,28 @@ public class Venmo {
 	}
 
 	
-	public static String submitSplitBill(String userId, List<ReceiptItem> items, int tipPercent) {
-		return requestPayment(items.get(0).people.get(0).venmoId.toString(), "-1.00", "Thanks for all the fish", null);
+	public static void submitSplitBill(String userId, List<ReceiptItem> items, int tipPercent)
+			throws UnderMinimumAmountException, VenmoException {
+		List<Person> peopleToBill = new ArrayList<Person>();
+		for (ReceiptItem item : items) {
+			for (Person person : item.people) {
+				if (!peopleToBill.contains(person)) {
+					person.owesCents = 0;
+					peopleToBill.add(person);
+				}
+				person.owesCents += (item.priceInCents + tipPercent * item.priceInCents / 100) / item.people.size();
+			}
+		}
+		for (Person person : peopleToBill) {
+			if (person.owesCents < 100) {
+				throw new UnderMinimumAmountException();
+			}
+		}
+		for (Person person : peopleToBill) {
+			String result = requestPayment(person.venmoId.toString(), person.owesCents, "Splittr", null);
+			if (result == null) {
+				throw new VenmoException();
+			}
+		}
 	}
 }

@@ -21,7 +21,7 @@ public class SplitterTest {
 
 	@Test
 	public void testRequestPaymentWithUserID() throws ParseException {
-		String apiResponse = Venmo.requestPayment("790795", "1.31", "testerex1808", null);
+		String apiResponse = Venmo.requestPayment("790795", 131, "testerex1808", null);
 
 		JSONParser parser = new JSONParser();
 		Object obj = parser.parse(apiResponse);
@@ -35,7 +35,7 @@ public class SplitterTest {
 
 	@Test
 	public void testRequestPaymentWithUserEmail() throws ParseException {
-		String apiResponse = Venmo.requestPayment(null, "1.43", "testerex1812", "testerex56%40gmail.com");
+		String apiResponse = Venmo.requestPayment(null, 143, "testerex1812", "testerex56%40gmail.com");
 
 		JSONParser parser = new JSONParser();
 		Object obj = parser.parse(apiResponse);

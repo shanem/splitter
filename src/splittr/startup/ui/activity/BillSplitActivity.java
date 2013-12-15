@@ -12,6 +12,8 @@ import splittr.startup.model.ReceiptItem;
 import splittr.startup.ui.PersonView;
 import splittr.startup.ui.adapter.ReceiptItemAdapter;
 import splittr.startup.venmo.Venmo;
+import splittr.startup.venmo.exceptions.UnderMinimumAmountException;
+import splittr.startup.venmo.exceptions.VenmoException;
 import abbyy.ocrsdk.android.AsyncProcessTask;
 import abbyy.ocrsdk.android.R;
 import android.app.Activity;
@@ -196,25 +198,36 @@ public class BillSplitActivity extends Activity {
     }
     
     private class SubmitBillTask extends AsyncTask<String, Void, String> {
-        @Override
+        boolean underMinimum = false;
+        boolean error = false;
+    	
+    	@Override
         protected String doInBackground(String... userId) {
         	try {
-        		return Venmo.submitSplitBill(userId[0], receiptItems, 15);
+        		Venmo.submitSplitBill(userId[0], receiptItems, 15);
         	}
-        	catch (Exception e) {
-        		Log.d("Exception", e.toString());
+        	catch (UnderMinimumAmountException e) {
+        		underMinimum = true;
+        	}
+        	catch (VenmoException e) {
+        		error = true;
         	}
         	return null;
         }
 
         @Override
         protected void onPostExecute(String result) {
-        	if (result != null) {
-        		Toast.makeText(BillSplitActivity.this, "Billed your friends!", Toast.LENGTH_LONG).show();
+        	String message;
+        	if (underMinimum) {
+        		message = "Sorry, someone is under the minimum transaction amount of $1.00";
+        	}
+        	else if (error) {
+        		message = "Sorry, there was an error submitting your request.";
         	}
         	else {
-        		Toast.makeText(BillSplitActivity.this, "Sorry, there was an error submitting your request.", Toast.LENGTH_LONG).show();
+        		message = "Billed your friends!";
         	}
+        	Toast.makeText(BillSplitActivity.this, message, Toast.LENGTH_LONG).show();
         }
     }
 }
