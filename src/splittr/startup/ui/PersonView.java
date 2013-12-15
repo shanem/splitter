@@ -32,7 +32,6 @@ public class PersonView extends RelativeLayout {
 
 		avatar = (ImageView) findViewById(R.id.avatar);
 		ImageLoader imageLoader = ImageLoader.getInstance();
-		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		imageLoader.displayImage(person.imageUrl, avatar);
 		selectionView = findViewById(R.id.selection);
 
