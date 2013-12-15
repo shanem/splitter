@@ -10,6 +10,7 @@ import java.util.List;
 import splittr.startup.model.Person;
 import splittr.startup.model.ReceiptItem;
 import splittr.startup.ui.PersonView;
+import splittr.startup.ui.adapter.PersonAdapter;
 import splittr.startup.ui.adapter.ReceiptItemAdapter;
 import splittr.startup.venmo.Venmo;
 import splittr.startup.venmo.exceptions.UnderMinimumAmountException;
@@ -17,15 +18,20 @@ import splittr.startup.venmo.exceptions.VenmoException;
 import abbyy.ocrsdk.android.AsyncProcessTask;
 import abbyy.ocrsdk.android.R;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +51,8 @@ public class BillSplitActivity extends Activity {
 	private ReceiptItemAdapter itemAdapter;
 
 	private Person selectedPerson;
-	private List<Person> people = new ArrayList<Person>();
+	private List<Person> allVenmoFriends = new ArrayList<Person>();
+	private List<Person> selectedVenmoFriends = new ArrayList<Person>();
 	private List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
 	
 	//Stuff used by the background tasks
@@ -179,9 +186,10 @@ public class BillSplitActivity extends Activity {
 
 	protected void updateView() {
 		peopleView.removeAllViews();
-		for (final Person person : people) {
+		int size = 80 * 3;
+		for (final Person person : selectedVenmoFriends) {
 			PersonView personView = new PersonView(this, person,
-					person == selectedPerson, 80 * 3);
+					person == selectedPerson, size);
 			personView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -190,12 +198,60 @@ public class BillSplitActivity extends Activity {
 			});
 			peopleView.addView(personView);
 		}
+		ImageView addUserButton = new ImageView(this);
+		addUserButton.setImageDrawable(getResources().getDrawable(android.R.drawable.btn_plus));
+		addUserButton.setPadding(20,  20,  20,  20);
+		addUserButton.setLayoutParams(new LayoutParams(80 * 4, 80 * 4));
+		
+		addUserButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showPersonSelector();
+			}
+		});
+		peopleView.addView(addUserButton);
 	}
 
 	public void setSelectedPerson(Person person) {
 		selectedPerson = person;
 		itemAdapter.setSelectedPerson(person);
 		updateView();
+	}
+	
+	protected void showPersonSelector() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Who are you with?");
+
+		final ListView personList = new ListView(this);
+		personList.setFocusable(false);
+		final PersonAdapter adapter = new PersonAdapter(this, allVenmoFriends);
+		personList.setAdapter(adapter);
+
+		personList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		    @Override
+		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		    	Person person = (Person) adapter.getItem(position);
+		    	person.selected = !person.selected;
+		    	adapter.notifyDataSetChanged();
+		    }
+		});
+
+		builder.setView(personList);
+		final Dialog dialog = builder.create();
+		dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				selectedVenmoFriends.clear();
+				for (Person person : allVenmoFriends) {
+					if (person.selected) {
+						selectedVenmoFriends.add(person);
+					}
+				}
+				updateView();
+			}
+		});
+		
+		dialog.show();
 	}
 	
     private class VenmoFriendsTask extends AsyncTask<String, Void, List<Person>> {
@@ -206,7 +262,7 @@ public class BillSplitActivity extends Activity {
 
         @Override
         protected void onPostExecute(List<Person> result) {
-        	people = result;
+        	allVenmoFriends = result;
         	updateView();
         }
     }

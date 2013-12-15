@@ -5,6 +5,7 @@ public class Person {
 	public String imageUrl;
 	public Long venmoId;
 	public int owesCents = 0;
+	public boolean selected = false;
 	
 	public Person(String name, String imageUrl, Long venmoId) {
 		this.name = name;
