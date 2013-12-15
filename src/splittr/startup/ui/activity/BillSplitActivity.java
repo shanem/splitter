@@ -17,13 +17,16 @@ import abbyy.ocrsdk.android.R;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BillSplitActivity extends Activity {
 
@@ -35,6 +38,7 @@ public class BillSplitActivity extends Activity {
 	private ListView itemsListView;
 	private ViewGroup peopleView;
 	private Spinner tipOptions;
+	private Button submitButton;
 
 	private ReceiptItemAdapter itemAdapter;
 
@@ -47,7 +51,8 @@ public class BillSplitActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.bill_split_layout);
-
+		generatePlaceholderData();
+		
 		String imageUrl = "unknown";
 
 		Bundle extras = getIntent().getExtras();
@@ -63,10 +68,20 @@ public class BillSplitActivity extends Activity {
 		ocrTextView.setText(getIntent().getExtras().getString(OCR_TEXT));
 
 		peopleView = (ViewGroup) findViewById(R.id.people_view);
+		
 		tipOptions = (Spinner) findViewById(R.id.tip_selector);
 		tipOptions.setSelection(5);
-
-		generatePlaceholderData();
+		
+		submitButton = (Button) findViewById(R.id.submit);
+		submitButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String[] params = new String[1];
+				params[0] = "790795";
+				SubmitBillTask billTask = new SubmitBillTask();
+				billTask.execute(params);
+			}
+		});
 
 		itemAdapter = new ReceiptItemAdapter(this, receiptItems);
 		itemAdapter.notifyDataSetChanged();
@@ -177,6 +192,29 @@ public class BillSplitActivity extends Activity {
         protected void onPostExecute(List<Person> result) {
         	people = result;
         	updateView();
+        }
+    }
+    
+    private class SubmitBillTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... userId) {
+        	try {
+        		return Venmo.submitSplitBill(userId[0], receiptItems, 15);
+        	}
+        	catch (Exception e) {
+        		Log.d("Exception", e.toString());
+        	}
+        	return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        	if (result != null) {
+        		Toast.makeText(BillSplitActivity.this, "Billed your friends!", Toast.LENGTH_LONG).show();
+        	}
+        	else {
+        		Toast.makeText(BillSplitActivity.this, "Sorry, there was an error submitting your request.", Toast.LENGTH_LONG).show();
+        	}
         }
     }
 }

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import splittr.startup.model.Person;
+import splittr.startup.model.ReceiptItem;
 
 public class Venmo {
 
@@ -24,10 +26,10 @@ public class Venmo {
 
 		if (userId != null) { //if the user is in venmo then
 			apiFormParams = "access_token=KgTEGQvNuFsgwpMXZPkDKCBgq2nmu2DS&user_id="
-					+ userId + "&amount=-" + amount + "&note=" + note;
+					+ userId + "&amount=-" + amount + "&note=" + URLEncoder.encode(note);
 		} else if (email != null) { //if the user is not in venmo then
 			apiFormParams = "access_token=KgTEGQvNuFsgwpMXZPkDKCBgq2nmu2DS&email="
-					+ email + "&amount=-" + amount + "&note=" + note;
+					+ email + "&amount=-" + amount + "&note=" + URLEncoder.encode(note);
 		} else { // error: missing req params
 			return null;
 		}
@@ -163,9 +165,9 @@ public class Venmo {
 				String fname = (String) jo2.get("first_name");
 				String lname = (String) jo2.get("last_name");
 				String picUrl = (String) jo2.get("profile_picture_url");
-				Long userIdentifier = (Long) jo2.get("id");
+				Long venmoId = (Long) jo2.get("id");
 
-				venmoFriends.add(new Person(fname + " " + lname, picUrl));
+				venmoFriends.add(new Person(fname + " " + lname, picUrl, venmoId));
 
 			}
 
@@ -176,4 +178,8 @@ public class Venmo {
 		return venmoFriends;
 	}
 
+	
+	public static String submitSplitBill(String userId, List<ReceiptItem> items, int tipPercent) {
+		return requestPayment(items.get(0).people.get(0).venmoId.toString(), "-1.00", "Thanks for all the fish", null);
+	}
 }
