@@ -11,12 +11,11 @@ import splittr.startup.model.Person;
 import splittr.startup.model.ReceiptItem;
 import splittr.startup.ui.PersonView;
 import splittr.startup.ui.adapter.ReceiptItemAdapter;
+import splittr.startup.venmo.Venmo;
 import abbyy.ocrsdk.android.AsyncProcessTask;
 import abbyy.ocrsdk.android.R;
-import abbyy.ocrsdk.android.R.id;
-import abbyy.ocrsdk.android.R.layout;
-import abbyy.ocrsdk.android.R.menu;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -85,7 +84,11 @@ public class BillSplitActivity extends Activity {
 						itemAdapter.notifyDataSetChanged();
 					}
 				});
-
+		
+		String[] params = new String[1];
+		params[0] = "790795";
+		VenmoFriendsTask friendsTask = new VenmoFriendsTask();
+		friendsTask.execute(params);
 		updateView();
 	}
 
@@ -169,4 +172,17 @@ public class BillSplitActivity extends Activity {
 		itemAdapter.setSelectedPerson(person);
 		updateView();
 	}
+	
+    private class VenmoFriendsTask extends AsyncTask<String, Void, List<Person>> {
+        @Override
+        protected List<Person> doInBackground(String... userId) {
+        	return Venmo.getFriends(userId[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<Person> result) {
+        	people = result;
+        	updateView();
+        }
+    }
 }

@@ -1,15 +1,10 @@
 package splittr.startup;
 
-import java.io.File;
+import android.app.Application;
 
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.utils.StorageUtils;
-
-import android.app.Application;
-import android.os.Bundle;
 
 public class SplittrApplication extends Application {
 
