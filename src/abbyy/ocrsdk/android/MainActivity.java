@@ -35,6 +35,7 @@ public class MainActivity extends Activity {
 	private SlidingLayer slidingLayer;
 	private Button debugButton;
 	private Button loginButton;
+	private Button fromCameraButton;
 	private Button venmoLoginButton;
 	
 	@Override
@@ -46,6 +47,7 @@ public class MainActivity extends Activity {
 		slidingLayer = (SlidingLayer) findViewById(R.id.slidingLayer);
 		debugButton = (Button) findViewById(R.id.debugButton);
 		loginButton = (Button) findViewById(R.id.loginButton);
+		fromCameraButton = (Button) findViewById(R.id.fromCameraButton);
 		venmoLoginButton = (Button) findViewById(R.id.slidingLoginButton);
 		overlay = (View) findViewById(R.id.overlay);
 
@@ -54,19 +56,13 @@ public class MainActivity extends Activity {
 		loginButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (!slidingLayer.isOpened()) {
-					slidingLayer.openLayer(true);
-					overlay.setVisibility(View.VISIBLE);
-					Animation myFadeInAnimation = AnimationUtils.loadAnimation(
-							MainActivity.this, R.anim.fadein);
-					overlay.startAnimation(myFadeInAnimation);
-				} else {
-					slidingLayer.closeLayer(true);
-					overlay.setVisibility(View.GONE);
-				}
+				Uri oAuthUri = Uri.parse("https://api.venmo.com/oauth/authorize?client_id=" + Venmo.CLIENT_ID
+						+ "&scope=make_payments,access_friends,access_profile&response_type=token&"
+						+ "redirect_uri=http%3A%2F%2Fec2-50-16-145-146.compute-1.amazonaws.com%2Ftesterex.php");
+				Intent browserIntent = new Intent("android.intent.action.VIEW", oAuthUri);
+				startActivity(browserIntent);
 			}
 		});
-		
 
 		debugButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -75,17 +71,6 @@ public class MainActivity extends Activity {
 						BillSplitActivity.class);
 				intent.putExtra(BillSplitActivity.OCR_TEXT, "");
 				startActivity(intent);
-			}
-		});
-		
-		venmoLoginButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Uri oAuthUri = Uri.parse("https://api.venmo.com/oauth/authorize?client_id=" + Venmo.CLIENT_ID
-						+ "&scope=make_payments,access_friends,access_profile&response_type=token&"
-						+ "redirect_uri=http%3A%2F%2Fec2-50-16-145-146.compute-1.amazonaws.com%2Ftesterex.php");
-				Intent browserIntent = new Intent("android.intent.action.VIEW", oAuthUri);
-				startActivity(browserIntent);
 			}
 		});
 	}
@@ -144,6 +129,12 @@ public class MainActivity extends Activity {
 
 		startActivityForResult(intent, TAKE_PICTURE);
 	}
+	
+	private void updateView() {
+		loginButton.setVisibility(Venmo.getAccessToken() == null ? View.VISIBLE : View.INVISIBLE);
+		debugButton.setVisibility(Venmo.getAccessToken() == null ? View.INVISIBLE : View.VISIBLE);
+		fromCameraButton.setVisibility(Venmo.getAccessToken() == null ? View.INVISIBLE : View.VISIBLE);
+	}
 
 	public void openBillView(View view) {
 
@@ -159,6 +150,8 @@ public class MainActivity extends Activity {
 				Venmo.setAccessToken(query.replace("access_token=", ""));
 			}
 		}
+		
+		updateView();
 	}
 	
 	@Override
