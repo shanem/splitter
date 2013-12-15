@@ -320,7 +320,6 @@ public class BillSplitActivity extends Activity {
 			} else {
 				message = "Billed your friends!";
 			}
-			message = "Tipping: " + tipAmount;
 			Toast.makeText(BillSplitActivity.this, message, Toast.LENGTH_LONG)
 					.show();
 		}

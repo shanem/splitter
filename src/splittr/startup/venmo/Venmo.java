@@ -184,7 +184,7 @@ public class Venmo {
 		String apiResponse;
 		try {
 			URL url = new URL("https://api.venmo.com/users/" + userId
-					+ "/friends?"
+					+ "/friends?limit=100&"
 					+ "access_token=" + accessToken);
 
 			apiResponse = sendGetApiRequest(url);
