@@ -5,6 +5,7 @@ import java.util.List;
 import splittr.startup.model.Person;
 import splittr.startup.model.ReceiptItem;
 import splittr.startup.ui.PersonView;
+import splittr.startup.venmo.Venmo;
 import abbyy.ocrsdk.android.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -51,6 +52,6 @@ public class ReceiptItemAdapter extends ArrayAdapter<ReceiptItem> {
 	}
 	
 	private String formatPrice(int priceInCents) {
-		return "$" + (priceInCents / 100) + "." + (priceInCents % 100);
+		return "$" + Venmo.formatCents(priceInCents);
 	}
 }

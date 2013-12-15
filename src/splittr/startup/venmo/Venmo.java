@@ -44,7 +44,7 @@ public class Venmo {
 	}
 	
 	public static String formatCents(int cents) {
-		return (cents / 100) + "." + (cents % 100) + (cents % 10 == 0 ? "0" : "");
+		return (cents / 100) + "." + (cents % 100) + (cents % 100 == 0 ? "0" : "");
 	}
 
 	protected static String sendGetApiRequest(URL apiCall) {
