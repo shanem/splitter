@@ -21,13 +21,13 @@ import android.widget.ArrayAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-public class FriendsItemAdapter extends ArrayAdapter<Person> {
+public class DraggableFriendsAdapter extends ArrayAdapter<Person> {
 
     private Context context;
     private ArrayList<Person> people;
 
-    public FriendsItemAdapter(Context context, List<Person> people) {
-        super(context, R.layout.friend_row, people);
+    public DraggableFriendsAdapter(Context context, List<Person> people) {
+        super(context, R.layout.draggable_friend_item, people);
         this.context = context;
         this.people = (ArrayList<Person>) people;
     }
@@ -37,7 +37,7 @@ public class FriendsItemAdapter extends ArrayAdapter<Person> {
         Person person = people.get(position);
         LayoutInflater inflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.friend_row, null);
+        convertView = inflater.inflate(R.layout.draggable_friend_item, null);
         
         CircularImageView thumbnail_bk = (CircularImageView) convertView
                 .findViewById(R.id.friend_thumb_back);

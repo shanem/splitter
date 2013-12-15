@@ -19,35 +19,33 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-public class PersonAdapter extends ArrayAdapter<Person> {
+public class ListFriendsAdapter extends ArrayAdapter<Person> {
     Context context;
 
-    public PersonAdapter(Context context, List<Person> items) {
-        super(context, R.layout.person_item, items);
+    public ListFriendsAdapter(Context context, List<Person> items) {
+        super(context, R.layout.list_friend_item, items);
         this.context = context;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Person person = getItem(position);
-        LayoutInflater inflater = (LayoutInflater) getContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.person_item, null);
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.list_friend_item, null);
         ((TextView) convertView.findViewById(R.id.name)).setText(person.name);
-        CircularImageView thumbnail = ((CircularImageView) convertView
-                .findViewById(R.id.person_image));
+        final CircularImageView thumbnail = ((CircularImageView) convertView.findViewById(R.id.person_image));
         thumbnail.setBorderColor(0x00A3D8);
         if (!person.selected)
             thumbnail.setAlpha(.2f);
         else
-            thumbnail.setAlpha(1);
-        thumbnail.setOnClickListener(new OnClickListener() {
+            thumbnail.setAlpha(1f);
+        convertView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v.getAlpha() < 1f)
-                    v.setAlpha(1);
+                if (thumbnail.getAlpha() < 1f)
+                    thumbnail.setAlpha(1f);
                 else
-                    v.setAlpha(.2f);
+                    thumbnail.setAlpha(.2f);
                 person.selected = !person.selected;
             }
         });

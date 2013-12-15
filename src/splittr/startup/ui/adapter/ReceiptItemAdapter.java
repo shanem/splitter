@@ -1,3 +1,4 @@
+
 package splittr.startup.ui.adapter;
 
 import java.util.List;
@@ -20,84 +21,83 @@ import android.widget.TextView;
 
 public class ReceiptItemAdapter extends ArrayAdapter<ReceiptItem> {
 
-	private Context context;
-	private Person selectedPerson;
+    private Context context;
+    private Person selectedPerson;
 
-	public ReceiptItemAdapter(Context context, List<ReceiptItem> objects) {
-		super(context, R.layout.bill_row, objects);
-	}
+    public ReceiptItemAdapter(Context context, List<ReceiptItem> objects) {
+        super(context, R.layout.bill_item, objects);
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		final ReceiptItem item = getItem(position);
-		LayoutInflater inflater = (LayoutInflater) getContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		convertView = inflater.inflate(R.layout.bill_row, null);
-		TextView convert = ((TextView) convertView
-				.findViewById(R.id.bill_row_price));
-		convert.setText(Venmo.formatCents(item.priceInCents));
-		convert.setOnDragListener(new MyDragListener());
-		TextView row = ((TextView) convertView.findViewById(R.id.bill_row_name));
-		row.setText(item.label);
-		row.setOnDragListener(new MyDragListener());
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        final ReceiptItem item = getItem(position);
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.bill_item, null);
 
-		/*
-		 * ViewGroup peopleLayout = (ViewGroup)
-		 * convertView.findViewById(R.id.people_layout);
-		 * peopleLayout.removeAllViews(); for (final Person person :
-		 * item.people) { PersonView personView = new PersonView(context,
-		 * person, false, 42 * 3); peopleLayout.addView(personView); }
-		 */
+        TextView price = ((TextView) convertView.findViewById(R.id.bill_item_price));
+        price.setText(Venmo.formatCents(item.priceInCents));
+        price.setOnDragListener(new MyDragListener());
 
-		// convertView.setOnDragListener(new MyDragListener());
+        TextView name = ((TextView) convertView.findViewById(R.id.bill_item_name));
+        name.setText(item.label);
+        name.setOnDragListener(new MyDragListener());
 
-		return convertView;
-	}
+        if (convertView.getTag() != null && convertView.getTag().equals("selected")) {
+            price.setTextColor(0xff0083C8);
+            name.setTextColor(0xff0083C8);
+        }
 
-	public void setSelectedPerson(Person selectedPerson) {
-		this.selectedPerson = selectedPerson;
-	}
+        return convertView;
+    }
 
-	public Person getSelectedPerson() {
-		return selectedPerson;
-	}
+    public void setSelectedPerson(Person selectedPerson) {
+        this.selectedPerson = selectedPerson;
+    }
 
-	class MyDragListener implements OnDragListener {
+    public Person getSelectedPerson() {
+        return selectedPerson;
+    }
 
-		@Override
-		public boolean onDrag(View v, DragEvent event) {
-			int action = event.getAction();
-			switch (event.getAction()) {
-			case DragEvent.ACTION_DRAG_STARTED:
-				// do nothing
-				break;
-			case DragEvent.ACTION_DRAG_ENTERED:
-				((TextView)((ViewGroup) v.getParent()).findViewById(R.id.bill_row_price))
-						.setTextColor(Color.GREEN);
-				break;
-			case DragEvent.ACTION_DRAG_EXITED:
-				((TextView)((ViewGroup) v.getParent()).findViewById(R.id.bill_row_price))
-				.setTextColor(Color.GRAY);
-				break;
-			case DragEvent.ACTION_DROP:
-				// Dropped, reassign View to ViewGroup
-				View view = (View) event.getLocalState();
-				ListView owner = (ListView) view.getParent().getParent();
-				((FriendsItemAdapter) ((HeaderViewListAdapter) owner
-						.getAdapter()).getWrappedAdapter())
-						.notifyDataSetChanged();
-				/*
-				 * LinearLayout container = (LinearLayout) v;
-				 * container.addView(view); view.setVisibility(View.VISIBLE);
-				 */
-				break;
-			case DragEvent.ACTION_DRAG_ENDED:
-				// v.setBackgroundColor(Color.GREEN);
-			default:
-				break;
-			}
-			return true;
-		}
-	}
+    class MyDragListener implements OnDragListener {
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int action = event.getAction();
+            ViewGroup parent;
+            switch (event.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    // do nothing
+                    break;
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    parent = ((ViewGroup) v.getParent());
+                    if (parent.getTag() == null || !parent.getTag().equals("selected")) {
+                        ((TextView) parent.findViewById(R.id.bill_item_price)).setTextColor(0xff0083C8);
+                        ((TextView) parent.findViewById(R.id.bill_item_name)).setTextColor(0xff0083C8);
+                    }
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    parent = ((ViewGroup) v.getParent());
+                    if (parent.getTag() == null || !parent.getTag().equals("selected")) {
+                        ((TextView) parent.findViewById(R.id.bill_item_price)).setTextColor(Color.GRAY);
+                        ((TextView) parent.findViewById(R.id.bill_item_name)).setTextColor(Color.BLACK);
+                    }
+                    break;
+                case DragEvent.ACTION_DROP:
+                    // Dropped, reassign View to ViewGroup
+                    View view = (View) event.getLocalState();
+                    ListView owner = (ListView) view.getParent().getParent();
+                    ((DraggableFriendsAdapter) ((HeaderViewListAdapter) owner.getAdapter()).getWrappedAdapter())
+                            .notifyDataSetChanged();
+                    parent = ((ViewGroup) v.getParent());
+                    parent.setTag("selected");
+                    break;
+                case DragEvent.ACTION_DRAG_ENDED:
+                    // v.setBackgroundColor(Color.GREEN);
+                default:
+                    break;
+            }
+            return true;
+        }
+    }
 
 }

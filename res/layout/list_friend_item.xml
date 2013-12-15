@@ -22,7 +22,6 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="4dp"
         android:layout_toRightOf="@id/person_image"
-        android:focusable="false"
         android:gravity="center_vertical"
         android:textColor="#000000"
         android:textSize="22sp" />
