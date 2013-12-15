@@ -1,5 +1,7 @@
 package splittr.startup.ui;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import splittr.startup.model.Person;
 import splittr.startup.ui.activity.BillSplitActivity;
 import android.content.Context;
@@ -26,7 +28,7 @@ public class PersonView extends RelativeLayout {
 		inflater.inflate(R.layout.person, this, true);
 		
 		avatar = (ImageView) findViewById(R.id.avatar);
-		avatar.setImageResource(person.imageResource);
+		ImageLoader.getInstance().displayImage(person.imageUrl, avatar);
 		selectionView = findViewById(R.id.selection);
 		
 		setOnClickListener(new OnClickListener() {

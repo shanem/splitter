@@ -66,12 +66,9 @@ public class BillSplitActivity extends Activity {
 		receiptItems.add(new ReceiptItem("Pear", 80));
 		
 		people.clear();
-		people.add(new Person("Shane", ""));
-		people.get(0).imageResource = R.drawable.placeholder_avatar;
-		people.add(new Person("Mark", ""));
-		people.get(1).imageResource = R.drawable.placeholder_avatar_1;
-		people.add(new Person("Bob", ""));
-		people.get(2).imageResource = R.drawable.placeholder_avatar_2;
+		people.add(new Person("Shane", "http://i.stack.imgur.com/UywPC.jpg?s=64&g=1"));
+		people.add(new Person("Mark", "https://www.gravatar.com/avatar/bbd257637393bcbc390db713d3ad31bb?s=128&d=identicon&r=PG"));
+		people.add(new Person("Bob", "https://www.gravatar.com/avatar/2bb8f84e5afc6318fd03de5bf28d1edc?s=128&d=identicon&r=PG"));
 	}
 	
 	protected void updateView() {
