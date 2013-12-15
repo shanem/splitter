@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class BillSplitActivity extends Activity {
@@ -33,6 +34,7 @@ public class BillSplitActivity extends Activity {
 	private TextView ocrTextView;
 	private ListView itemsListView;
 	private ViewGroup peopleView;
+	private Spinner tipOptions;
 
 	private ReceiptItemAdapter itemAdapter;
 
@@ -61,6 +63,8 @@ public class BillSplitActivity extends Activity {
 		ocrTextView.setText(getIntent().getExtras().getString(OCR_TEXT));
 
 		peopleView = (ViewGroup) findViewById(R.id.people_view);
+		tipOptions = (Spinner) findViewById(R.id.tip_selector);
+		tipOptions.setSelection(5);
 
 		generatePlaceholderData();
 
@@ -140,16 +144,6 @@ public class BillSplitActivity extends Activity {
 		receiptItems.add(new ReceiptItem("Apple", 100));
 		receiptItems.add(new ReceiptItem("Banana", 50));
 		receiptItems.add(new ReceiptItem("Pear", 80));
-
-		people.clear();
-		people.add(new Person("Shane",
-				"http://i.stack.imgur.com/UywPC.jpg?s=64&g=1"));
-		people.add(new Person(
-				"Mark",
-				"https://www.gravatar.com/avatar/bbd257637393bcbc390db713d3ad31bb?s=128&d=identicon&r=PG"));
-		people.add(new Person(
-				"Bob",
-				"https://www.gravatar.com/avatar/2bb8f84e5afc6318fd03de5bf28d1edc?s=128&d=identicon&r=PG"));
 	}
 
 	protected void updateView() {
