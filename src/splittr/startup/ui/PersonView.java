@@ -1,15 +1,14 @@
 package splittr.startup.ui;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import splittr.startup.model.Person;
-import splittr.startup.ui.activity.BillSplitActivity;
+import abbyy.ocrsdk.android.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import edu.sfsu.cs.orange.ocr.R;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class PersonView extends RelativeLayout {
 	private ImageView avatar;

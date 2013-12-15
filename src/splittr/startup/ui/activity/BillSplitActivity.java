@@ -7,6 +7,7 @@ import splittr.startup.model.Person;
 import splittr.startup.model.ReceiptItem;
 import splittr.startup.ui.PersonView;
 import splittr.startup.ui.adapter.ReceiptItemAdapter;
+import abbyy.ocrsdk.android.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import edu.sfsu.cs.orange.ocr.R;
 
 public class BillSplitActivity extends Activity {
 	public static final String OCR_TEXT = "ocrText"; 

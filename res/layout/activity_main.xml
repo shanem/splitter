@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/divider"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:src="@drawable/splitr" />
+
+    <Button
+        android:id="@+id/fromCameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:background="#00AADD"
+        android:onClick="captureImageFromCamera"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/fromCamera"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/fromFileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="captureImageFromSdCard"
+        android:text="@string/fromFile"
+        android:visibility="gone" />
+    
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" />
+
+</RelativeLayout>
