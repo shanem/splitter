@@ -16,5 +16,14 @@
         <item>25%</item>
         <item>...</item>
     </string-array>
+    <string-array name="waiter_names">
+        <item>Walter W.</item>
+        <item>Skylar W.</item>
+        <item>Jesse P.</item>
+        <item>Gustavo F.</item>
+        <item>Maria S.</item>
+        <item>Saul G.</item>
+        <item>...</item>
+    </string-array>
 
 </resources>

@@ -76,12 +76,22 @@
 
         <Spinner
             android:id="@+id/tip_selector"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="4dp"
             android:entries="@array/tip_options" />
+
+        <Spinner
+            android:id="@+id/waiter_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_toRightOf="@+id/tip_selector"
+            android:entries="@array/waiter_names" />
 
         <Button
             android:id="@+id/submit"

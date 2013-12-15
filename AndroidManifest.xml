@@ -13,7 +13,7 @@
     <application
         android:name="splittr.startup.SplittrApplication"
         android:hardwareAccelerated="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name" >
         <activity
             android:name="abbyy.ocrsdk.android.MainActivity"

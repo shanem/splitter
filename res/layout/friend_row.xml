@@ -2,6 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
+    
+    <splittr.startup.ui.CircularImageView
+        android:id="@+id/friend_thumb_back"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_margin="4dp" />
 
     <splittr.startup.ui.CircularImageView
         android:id="@+id/friend_thumb"
