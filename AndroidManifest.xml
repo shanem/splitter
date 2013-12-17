@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="abbyy.ocrsdk.android"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
-    <uses-sdk android:minSdkVersion="16" />
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,35 +16,35 @@
         android:name="splittr.startup.SplittrApplication"
         android:hardwareAccelerated="true"
         android:icon="@drawable/logo"
-        android:label="@string/app_name" >
+        android:label="@string/app_name">
         <activity
             android:name="abbyy.ocrsdk.android.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-		        <category android:name="android.intent.category.DEFAULT" />
-		        <category android:name="android.intent.category.BROWSABLE" />
-		        <data android:scheme="venmo1518" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="venmo1518" />
             </intent-filter>
         </activity>
         <activity
             android:name="splittr.startup.ui.activity"
             android:label="Splitr"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"></activity>
         <activity
             android:name="splittr.startup.ui.activity.BillSplitActivity"
             android:label="@string/title_activity_results"
             android:screenOrientation="portrait"
-			android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
-        </activity>
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

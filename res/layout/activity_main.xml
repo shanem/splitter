@@ -90,7 +90,6 @@
         android:id="@+id/slidingLayer"
         android:layout_width="320dp"
         android:layout_height="match_parent"
-        android:visibility="gone"
         slidingLayer:closeOnTapEnabled="false"
         slidingLayer:shadowDrawable="@drawable/sidebar_shadow"
         slidingLayer:shadowWidth="0dp"
